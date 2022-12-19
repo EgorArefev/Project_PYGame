@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pygame import *
 import pyganim
 import os
@@ -9,14 +12,23 @@ COLOR = "#888888"
 JUMP_POWER = 8.5
 GRAVITY = 0.35  # Сила, которая будет тянуть нас вниз
 ANIMATION_DELAY = 0.1  # скорость смены кадров
+ANIMATION_DELAY_2 = 0.1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
+ICON_DIR_2 = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
-ANIMATION_RIGHT = [('%s/mario/0.png' % ICON_DIR)]
-ANIMATION_LEFT = [('%s/mario/l1.png' % ICON_DIR)]
-ANIMATION_JUMP_LEFT = [('%s/mario/jl.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP_RIGHT = [('%s/mario/jr.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP = [('%s/mario/j.png' % ICON_DIR, 0.1)]
-ANIMATION_STAY = [('%s/mario/0.png' % ICON_DIR, 0.1)]
+ANIMATION_RIGHT = [('%s/players/0.png' % ICON_DIR)]
+ANIMATION_LEFT = [('%s/players/l1.png' % ICON_DIR)]
+ANIMATION_JUMP_LEFT = [('%s/players/jl.png' % ICON_DIR, 0.1)]
+ANIMATION_JUMP_RIGHT = [('%s/players/jr.png' % ICON_DIR, 0.1)]
+ANIMATION_JUMP = [('%s/players/j.png' % ICON_DIR, 0.1)]
+ANIMATION_STAY = [('%s/players/0.png' % ICON_DIR, 0.1)]
+
+ANIMATION_RIGHT_2 = [('%s/players/0_2.png' % ICON_DIR_2)]
+ANIMATION_LEFT_2 = [('%s/players/r1.png' % ICON_DIR_2)]
+ANIMATION_JUMP_LEFT_2 = [('%s/players/jl2.png' % ICON_DIR_2, 0.1)]
+ANIMATION_JUMP_RIGHT_2 = [('%s/players/jr2.png' % ICON_DIR_2, 0.1)]
+ANIMATION_JUMP_2 = [('%s/players/j2.png' % ICON_DIR_2, 0.1)]
+ANIMATION_STAY_2 = [('%s/players/0_2.png' % ICON_DIR_2, 0.1)]
 
 
 class Player(sprite.Sprite):
@@ -117,6 +129,7 @@ class Player(sprite.Sprite):
                     self.yvel = 0  # и энергия прыжка пропадает
 
 
+
 class Player_2(sprite.Sprite):
     def __init__(self, x, y):
         sprite.Sprite.__init__(self)
@@ -131,28 +144,28 @@ class Player_2(sprite.Sprite):
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
         #        Анимация движения вправо
         boltAnim = []
-        for anim in ANIMATION_RIGHT:
-            boltAnim.append((anim, ANIMATION_DELAY))
+        for anim in ANIMATION_RIGHT_2:
+            boltAnim.append((anim, ANIMATION_DELAY_2))
         self.boltAnimRight = pyganim.PygAnimation(boltAnim)
         self.boltAnimRight.play()
         #        Анимация движения влево
         boltAnim = []
-        for anim in ANIMATION_LEFT:
-            boltAnim.append((anim, ANIMATION_DELAY))
+        for anim in ANIMATION_LEFT_2:
+            boltAnim.append((anim, ANIMATION_DELAY_2))
         self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
         self.boltAnimLeft.play()
 
-        self.boltAnimStay = pyganim.PygAnimation(ANIMATION_STAY)
+        self.boltAnimStay = pyganim.PygAnimation(ANIMATION_STAY_2)
         self.boltAnimStay.play()
         self.boltAnimStay.blit(self.image, (0, 0))  # По-умолчанию, стоим
 
-        self.boltAnimJumpLeft = pyganim.PygAnimation(ANIMATION_JUMP_LEFT)
+        self.boltAnimJumpLeft = pyganim.PygAnimation(ANIMATION_JUMP_LEFT_2)
         self.boltAnimJumpLeft.play()
 
-        self.boltAnimJumpRight = pyganim.PygAnimation(ANIMATION_JUMP_RIGHT)
+        self.boltAnimJumpRight = pyganim.PygAnimation(ANIMATION_JUMP_RIGHT_2)
         self.boltAnimJumpRight.play()
 
-        self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP)
+        self.boltAnimJump = pyganim.PygAnimation(ANIMATION_JUMP_2)
         self.boltAnimJump.play()
 
     def update(self, a, d, w, platforms):
@@ -188,7 +201,7 @@ class Player_2(sprite.Sprite):
         if not self.onGround:
             self.yvel += GRAVITY
 
-        self.onGround = False;  # Мы не знаем, когда мы на земле((
+        self.onGround = False  # Мы не знаем, когда мы на земле((
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
 
