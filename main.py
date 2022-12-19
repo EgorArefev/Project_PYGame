@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Импортируем библиотеку pygame
 import pygame
 from player import *
 from blocks import *
 
-# Объявляем переменные
-WIN_WIDTH = 988  # Ширина создаваемого окна
-WIN_HEIGHT = 598  # Высота
-DISPLAY = (WIN_WIDTH, WIN_HEIGHT)  # Группируем ширину и высоту в одну переменную
+
+WIN_WIDTH = 988
+WIN_HEIGHT = 598 
+DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 BACKGROUND_IMAGE = pygame.image.load('background-color/background_color_1.jpg')
 
 
@@ -30,10 +29,10 @@ def camera_configure(camera, target_rect):
     _, _, w, h = camera
     l, t = -l + WIN_WIDTH / 2, -t + WIN_HEIGHT / 2
 
-    l = min(0, l)  # Не движемся дальше левой границы
-    l = max(-(camera.width - WIN_WIDTH), l)  # Не движемся дальше правой границы
-    t = max(-(camera.height - WIN_HEIGHT), t)  # Не движемся дальше нижней границы
-    t = min(0, t)  # Не движемся дальше верхней границы
+    l = min(0, l) 
+    l = max(-(camera.width - WIN_WIDTH), l) 
+    t = max(-(camera.height - WIN_HEIGHT), t) 
+    t = min(0, t)
 
     return Rect(l, t, w, h)
 
@@ -44,9 +43,9 @@ def make_level():
     entities.add(hero)
     entities.add(hero_2)
     platforms = []
-    x = y = 0  # координаты
-    for row in level:  # вся строка
-        for col in row:  # каждый символ
+    x = y = 0 
+    for row in level: 
+        for col in row: 
             if col == "-":
                 pf = Platform(x, y)
                 entities.add(pf)
@@ -56,30 +55,29 @@ def make_level():
                 entities.add(bd)
                 platforms.append(bd)
 
-            x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
-        y += PLATFORM_HEIGHT  # то же самое и с высотой
-        x = 0  # на каждой новой строчке начинаем с нуля
+            x += PLATFORM_WIDTH
+        y += PLATFORM_HEIGHT
+        x = 0 
 
 
 def main():
     global level, entities, platforms, hero, hero_2
-    pygame.init()  # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
-    pygame.display.set_caption("Super Mario Boy")  # Пишем в шапку
+    pygame.init() 
+    screen = pygame.display.set_mode(DISPLAY) 
+    pygame.display.set_caption("Super Mario Boy") 
     clock = pygame.time.Clock()
-    bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
-    # будем использовать как фон
+    bg = Surface((WIN_WIDTH, WIN_HEIGHT)) 
 
-    hero_2 = Player(55, 514)  # создаем героя по (x,y) координатам
-    left = right = False  # по умолчанию - стоим
+    hero_2 = Player(55, 514)
+    left = right = False
     up = False
 
-    hero = Player(835, 514)  # создаем героя по (x,y) координатам
-    a = d = False  # по умолчанию - стоим
+    hero = Player(835, 514) 
+    a = d = False 
     w = False
 
-    entities = pygame.sprite.Group()  # Все объекты
-    platforms = []  # то, во что мы будем врезаться или опираться
+    entities = pygame.sprite.Group()
+    platforms = [] 
 
     entities.add(hero)
     entities.add(hero_2)
@@ -112,14 +110,14 @@ def main():
 
     make_level()
 
-    total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
-    total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
+    total_level_width = len(level[0]) * PLATFORM_WIDTH
+    total_level_height = len(level) * PLATFORM_HEIGHT
 
     camera = Camera(camera_configure, total_level_width, total_level_height)
     running = True
 
-    while running:  # Основной цикл программы
-        for e in pygame.event.get():  # Обрабатываем события
+    while running:
+        for e in pygame.event.get():
             if e.type == QUIT:
                 running = False
             elif e.type == KEYDOWN:
@@ -163,13 +161,13 @@ def main():
                     left = False
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
-        hero.update(left, right, up, platforms)  # передвижение
-        hero_2.update(a, d, w, platforms)  # передвижение
-        entities.draw(screen)  # отображение
+        hero.update(left, right, up, platforms)
+        hero_2.update(a, d, w, platforms)
+        entities.draw(screen)
         for e in entities:
             screen.blit(e.image, camera.apply(e))
 
-        pygame.display.update()  # обновление и вывод всех изменений на экран
+        pygame.display.update()
         clock.tick(75)
 
 
