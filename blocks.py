@@ -1,4 +1,4 @@
-from platformerhabrahabr import DISPLAY
+from mains import DISPLAY
 
 
 from pygame import *
