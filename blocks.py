@@ -1,4 +1,4 @@
-from platformerhabrahabr import DISPLAY
+from main import DISPLAY
 
 
 from pygame import *
@@ -6,7 +6,7 @@ import os
 
 PLATFORM_WIDTH = 26
 PLATFORM_HEIGHT = 26
-ICON_DIR = os.path.dirname(__file__) #  Полный путь к каталогу с файлами
+ICON_DIR = os.path.dirname(__file__)
 
 
 class Platform(sprite.Sprite):
