@@ -1,4 +1,4 @@
-from main import DISPLAY
+from mains import DISPLAY
 
 
 from pygame import *
