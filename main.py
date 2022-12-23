@@ -1,3 +1,5 @@
+import pygame.sprite
+
 from player import *
 from blocks import *
 from gun import *
@@ -6,31 +8,6 @@ WIN_WIDTH = 988
 WIN_HEIGHT = 598
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 BACKGROUND_IMAGE = pygame.image.load('background-color/background_color_1.jpg')
-
-
-class Camera:
-    def __init__(self, camera_func, width, height):
-        self.camera_func = camera_func
-        self.state = Rect(0, 0, width, height)
-
-    def apply(self, target):
-        return target.rect.move(self.state.topleft)
-
-    def update(self, target):
-        self.state = self.camera_func(self.state, target.rect)
-
-
-def camera_configure(camera, target_rect):
-    l, t, _, _ = target_rect
-    _, _, w, h = camera
-    l, t = -l + WIN_WIDTH / 2, -t + WIN_HEIGHT / 2
-
-    l = min(0, l)
-    l = max(-(camera.width - WIN_WIDTH), l)
-    t = max(-(camera.height - WIN_HEIGHT), t)
-    t = min(0, t)
-
-    return Rect(l, t, w, h)
 
 
 def make_level():
@@ -63,21 +40,16 @@ def main():
     screen = pygame.display.set_mode(DISPLAY)
     pygame.display.set_caption("Гора: Анычар")
     clock = pygame.time.Clock()
-    bg = Surface((WIN_WIDTH, WIN_HEIGHT))
-
 
     hero_2 = Player(55, 514)
-    left = right = False
-    up = False
 
-    hero = Player(835, 514)
-    a = d = False
-    w = False
+    hero = Player(835, 514, red=1)
 
     gun = Gun(400, 5)
 
-    boxes = pygame.sprite.Group()
+    all_boxes = pygame.sprite.Group()
     entities = pygame.sprite.Group()
+    all_drops = pygame.sprite.Group()
     platforms = []
 
     entities.add(hero)
@@ -112,10 +84,6 @@ def main():
 
     make_level()
 
-    total_level_width = len(level[0]) * PLATFORM_WIDTH
-    total_level_height = len(level) * PLATFORM_HEIGHT
-
-    camera = Camera(camera_configure, total_level_width, total_level_height)
     running = True
 
     while running:
@@ -124,23 +92,27 @@ def main():
                 running = False
             elif e.type == KEYDOWN:
                 if e.key == K_w:
-                    w = True
+                    hero_2.up = True
+                    #w = True
                 elif e.key == K_a:
-                    a = True
+                    hero_2.left = True
+                    #a = True
                 elif e.key == K_d:
-                    d = True
+                    hero_2.right = True
+                    #d = True
                 elif e.key == K_s:
                     new_l = list(map(list, level))
+                    print(0)
                     if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " ":
                         new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] = "-"
                         level = list(map("".join, new_l))
                         make_level()
                 elif e.key == K_UP:
-                    up = True
+                    hero.up = True
                 elif e.key == K_LEFT:
-                    left = True
+                    hero.left = True
                 elif e.key == K_RIGHT:
-                    right = True
+                    hero.right = True
                 elif e.key == K_DOWN:
                     new_l = list(map(list, level))
                     if new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] == " ":
@@ -150,33 +122,40 @@ def main():
 
             elif e.type == KEYUP:
                 if e.key == K_w:
-                    w = False
+                    hero_2.up = False
                 elif e.key == K_d:
-                    d = False
+                    hero_2.right = False
                 elif e.key == K_a:
-                    a = False
+                    hero_2.left = False
                 elif e.key == K_UP:
-                    up = False
+                    hero.up = False
                 elif e.key == K_RIGHT:
-                    right = False
+                    hero.right = False
                 elif e.key == K_LEFT:
-                    left = False
+                    hero.left = False
+
+        if col := pygame.sprite.spritecollideany(hero, all_boxes):
+            all_drops.add(col.make_drop(hero.color))
+
+        if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
+            all_drops.add(col.make_drop(hero_2.color))
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
         gun.update(platforms)
         box = gun.check_box()
         if box:
-            boxes.add(box)
-        hero.update(left, right, up, platforms)
-        hero_2.update(a, d, w, platforms)
-        for box in boxes:
-            box.update(platforms)
-            screen.blit(box.image, camera.apply(box))
-        for e in entities:
-            screen.blit(e.image, camera.apply(e))
+            all_boxes.add(box)
+        hero.update(platforms)
+        hero_2.update(platforms)
+        all_boxes.draw(screen)
+        all_boxes.update(platforms)
+
+        all_drops.draw(screen)
+        all_drops.update(hero)
+        entities.draw(screen)
 
         pygame.display.update()
-        clock.tick(75)
+        clock.tick(60)
 
 
 if __name__ == "__main__":

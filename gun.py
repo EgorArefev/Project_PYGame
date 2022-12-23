@@ -2,15 +2,23 @@ import pygame
 import time
 import random
 
-boxes = [pygame.image.load("gun_with_blocks/gun_box.png"), pygame.image.load("gun_with_blocks/ghost_box.png")]
+WIN_WIDTH = 988
+
+boxes = [pygame.image.load("gun_with_blocks/gun_box.png"),
+         pygame.image.load("gun_with_blocks/ghost_box.png")]
 
 
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = random.choice(boxes)
+        self.image = boxes[0]
+        self.type = drops[0]
         self.rect = self.image.get_rect().move(x, y)
         self.destination = 8
+
+    def make_drop(self, color):
+        self.kill()
+        return self.type(color)
 
     def update(self, platforms):
         self.rect.y += self.destination
@@ -29,7 +37,7 @@ class Gun(pygame.sprite.Sprite):
 
     def update(self, platforms):
         self.rect.x += self.destination
-        if pygame.sprite.spritecollideany(self, platforms):
+        if self.rect.left <= 0 or self.rect.right >= WIN_WIDTH:
             self.destination *= -1
 
     def check_box(self):
@@ -39,3 +47,34 @@ class Gun(pygame.sprite.Sprite):
 
     def next_box_time(self):
         self.next_box = time.time() + (1 + random.random()) * 5
+
+
+class Ghost(pygame.sprite.Sprite):
+    image = pygame.image.load("gun_with_blocks/ghost.png")
+
+    def __init__(self, color):
+        super().__init__()
+        self.color = color
+        self.rect = self.image.get_rect().move(300, 300)
+
+    def update(self, hero):
+        x, y = hero.rect.x, hero.rect.y
+        x_s, y_s = self.rect.x, self.rect.y
+        s = ((x_s - x) ** 2 + (y_s - y) ** 2) ** 0.5 // 1
+        x_to = (x - x_s) / (s / 2) // 1
+        y_to = (y - y_s) / (s / 2) // 1
+        self.rect = self.rect.move(x_to, y_to)
+        if self.rect.colliderect(hero):
+            hero.health -= 2
+            self.kill()
+            #.move(300, random.randint(100, 500))
+
+class Tourell(pygame.sprite.Sprite):
+    #image = pygame.image.load("gun_with_blocks/tourel.png")
+
+    def __init__(self, color):
+        super().__init__()
+        self.rect = self.image.get_rect().move(x, y)
+
+
+drops = [Ghost, Tourell]
