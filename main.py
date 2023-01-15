@@ -1,3 +1,5 @@
+import sys
+
 import pygame.sprite
 
 from player import *
@@ -34,16 +36,63 @@ def make_level():
         x = 0
 
 
+def terminate():
+    pygame.quit()
+    sys.exit()
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join(name)
+    try:
+        image = pygame.image.load(fullname)
+    except pygame.error as message:
+        print('Cannot load image:', name)
+        raise SystemExit(message)
+    if colorkey == -1:
+            colorkey = image.get_at((0, 0))
+            image.set_colorkey(colorkey)
+    image = image.convert_alpha()
+    return image
+
+
+def start_screen():
+    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 2"]
+
+    fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 36)
+    text_coord = 250
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 300
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+    hero = pygame.transform.scale(pygame.image.load("players/0.png"), (110, 165))
+    screen.blit(hero, (325, 50))
+    hero = pygame.transform.scale(pygame.image.load("players/0_2.png"), (110, 165))
+    screen.blit(hero, (525, 50))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.KEYDOWN or \
+                    event.type == pygame.MOUSEBUTTONDOWN:
+                return  # начинаем игру
+        pygame.display.flip()
+        clock.tick(60)
+
+
 def main():
     global level, entities, platforms, hero, hero_2, gun
-    pygame.init()
-    screen = pygame.display.set_mode(DISPLAY)
-    pygame.display.set_caption("Гора: Анычар")
-    clock = pygame.time.Clock()
 
     hero_2 = Player(55, 514)
-
     hero = Player(835, 514, red=1)
+    heroes = pygame.sprite.Group()
+    heroes.add(hero, hero_2)
 
     gun = Gun(400, 5)
 
@@ -139,6 +188,7 @@ def main():
 
         if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
             all_drops.add(col.make_drop(hero_2.color))
+        #if hero. тут надо сделать проверку жив ли чел или сделать завершение игры со смертью - сделал
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
         gun.update(platforms)
@@ -151,7 +201,10 @@ def main():
         all_boxes.update(platforms)
 
         all_drops.draw(screen)
-        all_drops.update(hero)
+        try:
+            all_drops.update(heroes)
+        except:
+            print(f"Выиграл {heroes.sprites()[0].color}")
         entities.draw(screen)
 
         pygame.display.update()
@@ -159,4 +212,10 @@ def main():
 
 
 if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode(DISPLAY)
+    pygame.display.set_caption("Гора: Анычар")
+    clock = pygame.time.Clock()
+
+    start_screen()
     main()

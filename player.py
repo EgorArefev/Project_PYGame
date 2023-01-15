@@ -83,14 +83,12 @@ class Player(sprite.Sprite):
         self.boltAnimJump = pyganim.PygAnimation(self.jump_jump)
         self.boltAnimJump.play()
 
-
     def update(self, platforms):
         if self.up:
             if self.onGround:
                 self.yvel = -JUMP_POWER
             self.image.fill(Color(COLOR))
             self.boltAnimJump.blit(self.image, (0, 0))
-
         if self.left:
             self.xvel = -MOVE_SPEED
             self.image.fill(Color(COLOR))
@@ -98,7 +96,6 @@ class Player(sprite.Sprite):
                 self.boltAnimJumpLeft.blit(self.image, (0, 0))
             else:
                 self.boltAnimLeft.blit(self.image, (0, 0))
-
         if self.right:
             self.xvel = MOVE_SPEED
             self.image.fill(Color(COLOR))
@@ -106,22 +103,21 @@ class Player(sprite.Sprite):
                 self.boltAnimJumpRight.blit(self.image, (0, 0))
             else:
                 self.boltAnimRight.blit(self.image, (0, 0))
-
         if not (self.left or self.right):
             self.xvel = 0
             if not self.up:
                 self.image.fill(Color(COLOR))
                 self.boltAnimStay.blit(self.image, (0, 0))
-
         if not self.onGround:
             self.yvel += GRAVITY
-
         self.onGround = False
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
 
         self.rect.x += self.xvel
         self.collide(self.xvel, 0, platforms)
+        if self.health <= 0:
+            self.kill()
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:

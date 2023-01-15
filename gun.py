@@ -55,19 +55,21 @@ class Ghost(pygame.sprite.Sprite):
     def __init__(self, color):
         super().__init__()
         self.color = color
-        self.rect = self.image.get_rect().move(300, 300)
+        self.rect = self.image.get_rect().move(500, -100)
 
-    def update(self, hero):
+    def update(self, heroes):
+        hero = tuple(filter(lambda x: x.color == self.color, heroes.sprites()))[0]
         x, y = hero.rect.x, hero.rect.y
         x_s, y_s = self.rect.x, self.rect.y
         s = ((x_s - x) ** 2 + (y_s - y) ** 2) ** 0.5 // 1
         x_to = (x - x_s) / (s / 2) // 1
         y_to = (y - y_s) / (s / 2) // 1
         self.rect = self.rect.move(x_to, y_to)
-        if self.rect.colliderect(hero):
+        if pygame.sprite.spritecollideany(self, heroes):
             hero.health -= 2
             self.kill()
             #.move(300, random.randint(100, 500))
+
 
 class Tourell(pygame.sprite.Sprite):
     #image = pygame.image.load("gun_with_blocks/tourel.png")
