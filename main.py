@@ -120,9 +120,10 @@ def start_screen():
         clock.tick(60)
 
 
-def finish_screen():
+def finish_screen(color):
     global level
-    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 6"]
+    intro_text = [f"Выиграл {'синий' if color == 'blue' else 'красный'}!", "", "Чтобы выбрать уровень введите",
+                  "число на клавиатуре от 1 до 6"]
 
     fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
     screen.blit(fon, (0, 0))
@@ -133,13 +134,11 @@ def finish_screen():
         intro_rect = string_rendered.get_rect()
         text_coord += 10
         intro_rect.top = text_coord
-        intro_rect.x = 300
+        intro_rect.x = 500 - intro_rect.width // 2
         text_coord += intro_rect.height
         screen.blit(string_rendered, intro_rect)
-    hero = pygame.transform.scale(pygame.image.load("players/0.png"), (110, 165))
-    screen.blit(hero, (325, 50))
-    hero = pygame.transform.scale(pygame.image.load("players/0_2.png"), (110, 165))
-    screen.blit(hero, (525, 50))
+    hero = pygame.transform.scale(pygame.image.load(f"players/{'j' if color == 'blue' else 'j2'}.png"), (110, 165))
+    screen.blit(hero, (445, 50))
 
     while True:
         for event in pygame.event.get():
@@ -255,7 +254,7 @@ def main():
             heroes.sprites()[1]
         except:
             print(f"Выиграл {heroes.sprites()[0].color}")
-            return True
+            return heroes.sprites()[0].color
         entities.draw(screen)
 
         pygame.display.update()
@@ -270,8 +269,8 @@ if __name__ == "__main__":
 
     start_screen()
     while True:
-        if main():
-            if not finish_screen():
+        if color := main():
+            if not finish_screen(color):
                 break
         else:
             break
