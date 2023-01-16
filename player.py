@@ -84,6 +84,9 @@ class Player(sprite.Sprite):
         self.boltAnimJump.play()
 
     def update(self, platforms):
+        if self.rect.top > 700:
+            self.kill()
+            return
         if self.up:
             if self.onGround:
                 self.yvel = -JUMP_POWER

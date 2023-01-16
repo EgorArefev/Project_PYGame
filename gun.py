@@ -8,6 +8,10 @@ boxes = [pygame.image.load("gun_with_blocks/gun_box.png"),
          pygame.image.load("gun_with_blocks/ghost_box.png")]
 
 
+def opponent_color(color):
+    return "red" if color == "blue" else "blue"
+
+
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -54,7 +58,7 @@ class Ghost(pygame.sprite.Sprite):
 
     def __init__(self, color):
         super().__init__()
-        self.color = color
+        self.color = opponent_color(color)
         self.rect = self.image.get_rect().move(500, -100)
 
     def update(self, heroes):
@@ -65,7 +69,7 @@ class Ghost(pygame.sprite.Sprite):
         x_to = (x - x_s) / (s / 2) // 1
         y_to = (y - y_s) / (s / 2) // 1
         self.rect = self.rect.move(x_to, y_to)
-        if pygame.sprite.spritecollideany(self, heroes):
+        if hero := pygame.sprite.spritecollideany(self, heroes):
             hero.health -= 2
             self.kill()
             #.move(300, random.randint(100, 500))

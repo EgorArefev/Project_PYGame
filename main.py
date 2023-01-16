@@ -11,6 +11,32 @@ WIN_HEIGHT = 598
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 BACKGROUND_IMAGE = pygame.image.load('background-color/background_color_1.jpg')
 
+level = [
+    "-                                    -",
+    "-                                    -",
+    "-                                    -",
+    "-                                    -",
+    "-----                            -----",
+    "---     *                    *     ---",
+    "--    ---                    ---    --",
+    "-      --                    --      -",
+    "-       -                    -       -",
+    "-       ---                ---       -",
+    "--   -----                  -----   --",
+    "-       -                    -       -",
+    "-       *                    *       -",
+    "-      --                    --      -",
+    "---     -                    -     ---",
+    "--      *                    *      --",
+    "-     ----                  ----     -",
+    "-        -                  -        -",
+    "-----    *                  *    -----",
+    "-       --                  --       -",
+    "-                                    -",
+    "-                                    -",
+    "--------------------------------------",
+    "--------------------------------------"]
+
 
 def make_level():
     global level, platforms, entities, hero, hero_2, gun
@@ -56,7 +82,8 @@ def load_image(name, colorkey=None):
 
 
 def start_screen():
-    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 2"]
+    global level
+    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 6"]
 
     fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
     screen.blit(fon, (0, 0))
@@ -79,9 +106,55 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            elif event.type == pygame.KEYDOWN or \
-                    event.type == pygame.MOUSEBUTTONDOWN:
-                return  # начинаем игру
+            elif event.type == pygame.KEYDOWN:
+                if 1073741914 <= event.key < 1073741918:
+                    with open(f"levels/{(event.key - 2) % 6}.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                elif event.key == 1073741918:
+                    with open("levels/6.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return
+        pygame.display.flip()
+        clock.tick(60)
+
+
+def finish_screen():
+    global level
+    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 6"]
+
+    fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 36)
+    text_coord = 250
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 300
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+    hero = pygame.transform.scale(pygame.image.load("players/0.png"), (110, 165))
+    screen.blit(hero, (325, 50))
+    hero = pygame.transform.scale(pygame.image.load("players/0_2.png"), (110, 165))
+    screen.blit(hero, (525, 50))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.KEYDOWN:
+                if 1073741914 <= event.key < 1073741918:
+                    with open(f"levels/{(event.key - 2) % 6}.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                elif event.key == 1073741918:
+                    with open("levels/6.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return
         pygame.display.flip()
         clock.tick(60)
 
@@ -89,8 +162,8 @@ def start_screen():
 def main():
     global level, entities, platforms, hero, hero_2, gun
 
-    hero_2 = Player(55, 514)
-    hero = Player(835, 514, red=1)
+    hero_2 = Player(155, 514)
+    hero = Player(WIN_WIDTH - 180, 514, red=1)
     heroes = pygame.sprite.Group()
     heroes.add(hero, hero_2)
 
@@ -104,32 +177,6 @@ def main():
     entities.add(hero)
     entities.add(hero_2)
     entities.add(gun)
-
-    level = [
-        "-                                    -",
-        "-                                    -",
-        "-                                    -",
-        "-                                    -",
-        "-----                            -----",
-        "---     *                    *     ---",
-        "--    ---                    ---    --",
-        "-      --                    --      -",
-        "-       -                    -       -",
-        "-       ---                ---       -",
-        "--   -----                  -----   --",
-        "-       -                    -       -",
-        "-       *                    *       -",
-        "-      --                    --      -",
-        "---     -                    -     ---",
-        "--      *                    *      --",
-        "-     ----                  ----     -",
-        "-        -                  -        -",
-        "-----    *                  *    -----",
-        "-       --                  --       -",
-        "-                                    -",
-        "-                                    -",
-        "--------------------------------------",
-        "--------------------------------------"]
 
     make_level()
 
@@ -151,7 +198,6 @@ def main():
                     #d = True
                 elif e.key == K_s:
                     new_l = list(map(list, level))
-                    print(0)
                     if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " ":
                         new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] = "-"
                         level = list(map("".join, new_l))
@@ -164,10 +210,13 @@ def main():
                     hero.right = True
                 elif e.key == K_DOWN:
                     new_l = list(map(list, level))
-                    if new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] == " ":
-                        new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] = "-"
-                        level = list(map("".join, new_l))
-                        make_level()
+                    try:
+                        if new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] == " ":
+                            new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] = "-"
+                            level = list(map("".join, new_l))
+                            make_level()
+                    except:
+                        pass
 
             elif e.type == KEYUP:
                 if e.key == K_w:
@@ -203,8 +252,10 @@ def main():
         all_drops.draw(screen)
         try:
             all_drops.update(heroes)
+            heroes.sprites()[1]
         except:
             print(f"Выиграл {heroes.sprites()[0].color}")
+            return True
         entities.draw(screen)
 
         pygame.display.update()
@@ -218,4 +269,10 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     start_screen()
-    main()
+    while True:
+        if main():
+            if not finish_screen():
+                break
+        else:
+            break
+    terminate()
