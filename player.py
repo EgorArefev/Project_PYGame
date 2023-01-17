@@ -1,6 +1,7 @@
 from pygame import *
 import pyganim
 import os
+from bars import *
 
 MOVE_SPEED = 5
 WIDTH = 22
@@ -47,6 +48,10 @@ class Player(sprite.Sprite):
             self.anim_stay = ANIMATION_STAY_2
 
         super().__init__()
+        self.health_bar = Health(self.color)
+        self.block_bar = Blocks(self.color)
+        self.bar = sprite.Group(self.health_bar, self.block_bar)
+
         self.blocks_and_bullets = 10
         self.health = 10
         self.xvel = 0
@@ -84,6 +89,8 @@ class Player(sprite.Sprite):
         self.boltAnimJump.play()
 
     def update(self, platforms):
+        self.health_bar.update(self.health)
+        self.block_bar.update(self.blocks_and_bullets)
         if self.rect.top > 700:
             self.kill()
             return
