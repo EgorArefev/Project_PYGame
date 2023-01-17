@@ -236,10 +236,10 @@ def main():
                     hero.left = False
 
         if col := pygame.sprite.spritecollideany(hero, all_boxes):
-            all_drops.add(col.make_drop(hero.color))
+            all_drops.add(col.make_drop(hero))
 
         if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
-            all_drops.add(col.make_drop(hero_2.color))
+            all_drops.add(col.make_drop(hero_2))
         #if hero. тут надо сделать проверку жив ли чел или сделать завершение игры со смертью - сделал
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))

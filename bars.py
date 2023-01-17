@@ -6,7 +6,7 @@ class Bar(pygame.sprite.Sprite):
         super().__init__()
         self.color = color
         self.rect = pygame.Rect(0, 0, 180, 10)
-        self.rect.x = 788 if color == "red" else 20
+        self.rect.x = 778 if color == "red" else 30
 
 
 class Health(Bar):

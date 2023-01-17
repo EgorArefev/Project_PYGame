@@ -4,8 +4,8 @@ import random
 
 WIN_WIDTH = 988
 
-boxes = [pygame.image.load("gun_with_blocks/gun_box.png"),
-         pygame.image.load("gun_with_blocks/ghost_box.png")]
+boxes = [pygame.image.load("gun_with_blocks/ghost_box.png"),
+         pygame.image.load("gun_with_blocks/gun_box.png")]
 
 
 def opponent_color(color):
@@ -15,14 +15,15 @@ def opponent_color(color):
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = boxes[0]
-        self.type = drops[0]
+        num = random.randint(0, 1)
+        self.image = boxes[num]
+        self.type = drops[num]
         self.rect = self.image.get_rect().move(x, y)
         self.destination = 8
 
-    def make_drop(self, color):
+    def make_drop(self, hero):
         self.kill()
-        return self.type(color)
+        return self.type(hero)
 
     def update(self, platforms):
         self.rect.y += self.destination
@@ -56,9 +57,9 @@ class Gun(pygame.sprite.Sprite):
 class Ghost(pygame.sprite.Sprite):
     image = pygame.image.load("gun_with_blocks/ghost.png")
 
-    def __init__(self, color):
+    def __init__(self, hero):
         super().__init__()
-        self.color = opponent_color(color)
+        self.color = opponent_color(hero.color)
         self.rect = self.image.get_rect().move(500, -100)
 
     def update(self, heroes):
@@ -80,7 +81,16 @@ class Tourell(pygame.sprite.Sprite):
 
     def __init__(self, color):
         super().__init__()
-        self.rect = self.image.get_rect().move(x, y)
+        #self.rect = self.image.get_rect().move(x, y)
 
 
-drops = [Ghost, Tourell]
+class Adding(pygame.sprite.Sprite):
+    image = pygame.Surface((20, 20))
+    rect = pygame.Rect(0, 0, 20, 20)
+    def __init__(self, hero):
+        super().__init__()
+        hero.blocks_and_bullets += 5
+        self.kill()
+
+
+drops = [Ghost, Adding]
