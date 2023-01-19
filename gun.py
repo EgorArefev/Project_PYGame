@@ -112,7 +112,6 @@ class Tourell(pygame.sprite.Sprite):
         self.health = 3
         self.image.blit(self.bullet, (39, 50))
         self.next_box = time.time() + (1 + random.random()) * 5
-        #self.rect = self.image.get_rect().move(x, y)
 
     def update(self, heroes):
         hero = tuple(filter(lambda x: x.color == self.color, heroes.sprites()))[0]

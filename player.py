@@ -1,6 +1,5 @@
 from pygame import *
 import pyganim
-import os
 from bars import *
 
 MOVE_SPEED = 5
@@ -11,25 +10,25 @@ JUMP_POWER = 8.5
 GRAVITY = 0.35
 ANIMATION_DELAY = 0.1
 ANIMATION_DELAY_2 = 0.1
-ICON_DIR = os.path.dirname(__file__)
 
-ANIMATION_RIGHT = [('%s/players/0.png' % ICON_DIR)]
-ANIMATION_LEFT = [('%s/players/l1.png' % ICON_DIR)]
-ANIMATION_JUMP_LEFT = [('%s/players/jl.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP_RIGHT = [('%s/players/jr.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP = [('%s/players/j.png' % ICON_DIR, 0.1)]
-ANIMATION_STAY = [('%s/players/0.png' % ICON_DIR, 0.1)]
+ANIMATION_RIGHT = [('players/0.png')]
+ANIMATION_LEFT = [('players/l1.png')]
+ANIMATION_JUMP_LEFT = [('players/jl.png', 0.1)]
+ANIMATION_JUMP_RIGHT = [('players/jr.png', 0.1)]
+ANIMATION_JUMP = [('players/j.png', 0.1)]
+ANIMATION_STAY = [('players/0.png', 0.1)]
 
-ANIMATION_RIGHT_2 = [('%s/players/0_2.png' % ICON_DIR)]
-ANIMATION_LEFT_2 = [('%s/players/r1.png' % ICON_DIR)]
-ANIMATION_JUMP_LEFT_2 = [('%s/players/jl2.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP_RIGHT_2 = [('%s/players/jr2.png' % ICON_DIR, 0.1)]
-ANIMATION_JUMP_2 = [('%s/players/j2.png' % ICON_DIR, 0.1)]
-ANIMATION_STAY_2 = [('%s/players/0_2.png' % ICON_DIR, 0.1)]
+ANIMATION_RIGHT_2 = [('players/0_2.png')]
+ANIMATION_LEFT_2 = [('players/r1.png')]
+ANIMATION_JUMP_LEFT_2 = [('players/jl2.png', 0.1)]
+ANIMATION_JUMP_RIGHT_2 = [('players/jr2.png', 0.1)]
+ANIMATION_JUMP_2 = [('players/j2.png', 0.1)]
+ANIMATION_STAY_2 = [('players/0_2.png', 0.1)]
 
 
 class Player(sprite.Sprite):
     def __init__(self, x, y, red=False):
+        box_num = 0
         if not red:
             self.color = "blue"
             self.anim_right = ANIMATION_RIGHT
