@@ -198,7 +198,7 @@ def main():
                     # d = True
                 elif e.key == K_s:
                     new_l = list(map(list, level))
-                    if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " " and hero.blocks_and_bullets > 0:
+                    if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " " and hero_2.blocks_and_bullets > 0:
                         new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] = "-"
                         hero_2.blocks_and_bullets -= 1
                         level = list(map("".join, new_l))
