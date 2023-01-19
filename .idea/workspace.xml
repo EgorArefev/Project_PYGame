@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af11b1ed-2393-4afd-92ca-1038294bed4d" name="Changes" comment="bullets" />
+    <list default="true" id="af11b1ed-2393-4afd-92ca-1038294bed4d" name="Changes" comment="bullets">
+      <change beforePath="$PROJECT_DIR$/gun.py" beforeDir="false" afterPath="$PROJECT_DIR$/gun.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -202,8 +204,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.bars" />
         <item itemvalue="Python.gun" />
+        <item itemvalue="Python.bars" />
         <item itemvalue="Python.player" />
         <item itemvalue="Python.shooter_tut7" />
       </list>
@@ -253,7 +255,7 @@
       <workItem from="1673802130702" duration="685000" />
       <workItem from="1673860356213" duration="8873000" />
       <workItem from="1673943165099" duration="19792000" />
-      <workItem from="1674120223348" duration="7796000" />
+      <workItem from="1674120223348" duration="8120000" />
     </task>
     <task id="LOCAL-00001" summary="Matvey">
       <created>1671453361877</created>
@@ -332,7 +334,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674131607419</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="bullets">
+      <created>1674132430003</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1674132430003</updated>
+    </task>
+    <task id="LOCAL-00013" summary="bullets">
+      <created>1674132547396</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1674132547396</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -390,13 +406,13 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/__PyGame$bars.coverage" NAME="bars Coverage Results" MODIFIED="1674063175892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/__PyGame$main.coverage" NAME="main Coverage Results" MODIFIED="1674129234680" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/__PyGame$main.coverage" NAME="main Coverage Results" MODIFIED="1674132739633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SuperMarioBoy_0_11$platformerhabrahabr.coverage" NAME="platformerhabrahabr Coverage Results" MODIFIED="1671280535906" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/__PyGame$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1671456399855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../Загрузки/SuperMarioBoy-0.11 (1)/SuperMarioBoy-0.11" />
     <SUITE FILE_PATH="coverage/__PyGame$blocks.coverage" NAME="blocks Coverage Results" MODIFIED="1671285896923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SuperMarioBoy_0_11$blocks.coverage" NAME="blocks Coverage Results" MODIFIED="1671036143030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/__PyGame$shooter_tut7.coverage" NAME="shooter_tut7 Coverage Results" MODIFIED="1671720714232" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../Загрузки/Shooter-main" />
-    <SUITE FILE_PATH="coverage/__PyGame$gun.coverage" NAME="gun Coverage Results" MODIFIED="1674040715426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/__PyGame$gun.coverage" NAME="gun Coverage Results" MODIFIED="1674132730035" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/__PyGame$platformerhabrahabr.coverage" NAME="platformerhabrahabr Coverage Results" MODIFIED="1671456228717" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SuperMarioBoy_0_11$player.coverage" NAME="player Coverage Results" MODIFIED="1671280532098" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/__PyGame$player.coverage" NAME="player Coverage Results" MODIFIED="1673955607762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

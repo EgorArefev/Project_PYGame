@@ -6,7 +6,7 @@ from bullet import Bullet
 WIN_WIDTH = 988
 
 boxes = [pygame.image.load("gun_with_blocks/ghost_box.png"),
-         pygame.image.load("gun_with_blocks/tourel_box.png"),
+         pygame.transform.scale(pygame.image.load("gun_with_blocks/tourel_box.png"), (23, 23)),
          pygame.image.load("gun_with_blocks/gun_box.png")]
 
 
