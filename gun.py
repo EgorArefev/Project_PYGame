@@ -7,7 +7,8 @@ WIN_WIDTH = 988
 
 boxes = [pygame.image.load("gun_with_blocks/ghost_box.png"),
          pygame.transform.scale(pygame.image.load("gun_with_blocks/tourel_box.png"), (23, 23)),
-         pygame.image.load("gun_with_blocks/gun_box.png")]
+         pygame.image.load("gun_with_blocks/gun_box.png"),
+         pygame.image.load("gun_with_blocks/bullet_box.png")]
 
 
 def opponent_color(color):
@@ -59,7 +60,7 @@ class Gun(pygame.sprite.Sprite):
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        num = random.randint(0, 2)
+        num = random.randint(0, 3)
         self.image = boxes[num]
         self.type = drops[num]
         self.rect = self.image.get_rect().move(x, y)
@@ -123,7 +124,6 @@ class Tourell(pygame.sprite.Sprite):
         self.rect = self.rect.move(x_to, y_to)
         if time.time() > self.next_box:
             self.next_box = time.time() + (1 + random.random()) * 5
-            print(5)
             Gun.bullets.add(Bullet(self.rect.x, self.rect.y, x, y))
 
 
@@ -137,4 +137,19 @@ class Adding(pygame.sprite.Sprite):
         self.kill()
 
 
-drops = [Ghost, Tourell, Adding]
+class Bullet_box(pygame.sprite.Sprite):
+    image = pygame.Surface((20, 20))
+    rect = pygame.Rect(0, 0, 20, 20)
+
+    def __init__(self, hero):
+        super().__init__()
+        self.color = hero.color
+
+    def update(self, heroes):
+        hero = tuple(filter(lambda x: x.color == self.color, heroes.sprites()))[0]
+        hero_2 = tuple(filter(lambda x: x.color != self.color, heroes.sprites()))[0]
+        Gun.bullets.add(Bullet(hero.rect.x, hero.rect.y, hero_2.rect.x, hero_2.rect.y, color=hero.color))
+        self.kill()
+
+
+drops = [Ghost, Tourell, Adding, Bullet_box]
