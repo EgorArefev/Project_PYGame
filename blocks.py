@@ -1,24 +1,23 @@
-from main import DISPLAY
-
-from pygame import *
-import os
+import pygame
 
 PLATFORM_WIDTH = 26
 PLATFORM_HEIGHT = 26
-ICON_DIR = os.path.dirname(__file__)
 
 
-class Platform(sprite.Sprite):
+class Platform(pygame.sprite.Sprite):
+    image = pygame.image.load("blocks/platform1.png")
+
     def __init__(self, x, y):
-        sprite.Sprite.__init__(self)
-        self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
-        self.image = image.load("%s/blocks/platform1.png" % ICON_DIR)
-        self.rect = Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+        pygame.sprite.Sprite.__init__(self)
+        self.health = 3
+        self.rect = pygame.Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)
+
+    def update(self):
+        if self.health <= 0:
+            self.kill()
 
 
 class BlockDie(Platform):
     def __init__(self, x, y):
-        Platform.__init__(self, x, y)
-        self.image = image.load("%s/blocks/gun.png" % ICON_DIR)
-
-
+        super().__init__(x, y)
+        self.image = pygame.image.load("blocks/gun.png")

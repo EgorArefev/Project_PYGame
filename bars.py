@@ -13,9 +13,9 @@ class Health(Bar):
     def __init__(self, color):
         super().__init__(color)
         self.rect.top = 20
+        self.image = pygame.Surface((180, 10))
 
     def update(self, num):
-        self.image = pygame.Surface((180, 10))
         pygame.draw.rect(self.image, "red", (0, 0, 18 * num, 30))
 
 

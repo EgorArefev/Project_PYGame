@@ -44,18 +44,18 @@ def make_level():
     entities.add(hero)
     entities.add(hero_2)
     entities.add(gun)
-    platforms = []
+    platforms = pygame.sprite.Group()
     x = y = 0
     for row in level:
         for col in row:
             if col == "-":
                 pf = Platform(x, y)
                 entities.add(pf)
-                platforms.append(pf)
+                platforms.add(pf)
             if col == "*":
                 bd = BlockDie(x, y)
                 entities.add(bd)
-                platforms.append(bd)
+                platforms.add(bd)
 
             x += PLATFORM_WIDTH
         y += PLATFORM_HEIGHT
@@ -171,7 +171,6 @@ def main():
     all_boxes = pygame.sprite.Group()
     entities = pygame.sprite.Group()
     all_drops = pygame.sprite.Group()
-    platforms = []
 
     entities.add(hero)
     entities.add(hero_2)
@@ -243,14 +242,15 @@ def main():
         #if hero. тут надо сделать проверку жив ли чел или сделать завершение игры со смертью - сделал
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
-        gun.update(platforms)
+        gun.update(platforms.sprites())
         box = gun.check_box()
         if box:
             all_boxes.add(box)
-        hero.update(platforms)
-        hero_2.update(platforms)
+        hero.update(platforms.sprites())
+        hero_2.update(platforms.sprites())
         all_boxes.draw(screen)
-        all_boxes.update(platforms)
+        all_boxes.update(platforms.sprites())
+        platforms.update()
 
         all_drops.draw(screen)
         try:
@@ -263,6 +263,9 @@ def main():
         for h in [hero, hero_2]:
             for bar in h.bar.sprites():
                 screen.blit(bar.image, (bar.rect.x, bar.rect.y))
+
+        gun.bullets.update(heroes, platforms)
+        gun.bullets.draw(screen)
 
         pygame.display.update()
         clock.tick(60)
