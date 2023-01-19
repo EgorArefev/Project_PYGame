@@ -6,6 +6,7 @@ from bullet import Bullet
 WIN_WIDTH = 988
 
 boxes = [pygame.image.load("gun_with_blocks/ghost_box.png"),
+         pygame.image.load("gun_with_blocks/tourel_box.png"),
          pygame.image.load("gun_with_blocks/gun_box.png")]
 
 
@@ -58,7 +59,7 @@ class Gun(pygame.sprite.Sprite):
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        num = random.randint(0, 1)
+        num = random.randint(0, 2)
         self.image = boxes[num]
         self.type = drops[num]
         self.rect = self.image.get_rect().move(x, y)
@@ -136,4 +137,4 @@ class Adding(pygame.sprite.Sprite):
         self.kill()
 
 
-drops = [Ghost, Tourell]
+drops = [Ghost, Tourell, Adding]
