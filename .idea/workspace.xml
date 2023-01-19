@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af11b1ed-2393-4afd-92ca-1038294bed4d" name="Changes" comment="first_screen">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blocks.py" beforeDir="false" afterPath="$PROJECT_DIR$/blocks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/bullet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gun.py" beforeDir="false" afterPath="$PROJECT_DIR$/gun.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="af11b1ed-2393-4afd-92ca-1038294bed4d" name="Changes" comment="bullets" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -259,7 +253,7 @@
       <workItem from="1673802130702" duration="685000" />
       <workItem from="1673860356213" duration="8873000" />
       <workItem from="1673943165099" duration="19792000" />
-      <workItem from="1674120223348" duration="7135000" />
+      <workItem from="1674120223348" duration="7796000" />
     </task>
     <task id="LOCAL-00001" summary="Matvey">
       <created>1671453361877</created>
@@ -331,7 +325,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674126584214</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="bullets">
+      <created>1674131607419</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1674131607419</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,7 +385,8 @@
     <MESSAGE value="Matvey" />
     <MESSAGE value="ghosts_and_optimize" />
     <MESSAGE value="first_screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="first_screen" />
+    <MESSAGE value="bullets" />
+    <option name="LAST_COMMIT_MESSAGE" value="bullets" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/__PyGame$bars.coverage" NAME="bars Coverage Results" MODIFIED="1674063175892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
