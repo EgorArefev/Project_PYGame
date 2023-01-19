@@ -8,6 +8,8 @@ class Platform(pygame.sprite.Sprite):
     image = pygame.image.load("blocks/platform1.png")
 
     def __init__(self, x, y):
+        self.x = x
+        self.y = y
         pygame.sprite.Sprite.__init__(self)
         self.health = 3
         self.rect = pygame.Rect(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT)

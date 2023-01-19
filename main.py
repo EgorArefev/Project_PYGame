@@ -75,8 +75,8 @@ def load_image(name, colorkey=None):
         print('Cannot load image:', name)
         raise SystemExit(message)
     if colorkey == -1:
-            colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey)
+        colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
     image = image.convert_alpha()
     return image
 
@@ -189,13 +189,13 @@ def main():
             elif e.type == KEYDOWN:
                 if e.key == K_w:
                     hero_2.up = True
-                    #w = True
+                    # w = True
                 elif e.key == K_a:
                     hero_2.left = True
-                    #a = True
+                    # a = True
                 elif e.key == K_d:
                     hero_2.right = True
-                    #d = True
+                    # d = True
                 elif e.key == K_s:
                     new_l = list(map(list, level))
                     if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " " and hero.blocks_and_bullets > 0:
@@ -239,7 +239,7 @@ def main():
 
         if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
             all_drops.add(col.make_drop(hero_2))
-        #if hero. тут надо сделать проверку жив ли чел или сделать завершение игры со смертью - сделал
+        # if hero. тут надо сделать проверку жив ли чел или сделать завершение игры со смертью - сделал
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
         gun.update(platforms.sprites())
@@ -266,6 +266,10 @@ def main():
 
         gun.bullets.update(heroes, platforms)
         gun.bullets.draw(screen)
+        for pos in gun.crashed_block():
+            new_l = list(map(list, level))
+            new_l[pos[0]][pos[1]] = " "
+            level = list(map("".join, new_l))
 
         pygame.display.update()
         clock.tick(60)

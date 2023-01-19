@@ -49,6 +49,11 @@ class Gun(pygame.sprite.Sprite):
     def next_box_time(self):
         self.next_box = time.time() + (1 + random.random()) * 5
 
+    def crashed_block(self):
+        if c := self.bullets.sprites():
+            return c[0].return_crashed_blocks()
+        return []
+
 
 class Box(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -89,7 +94,6 @@ class Ghost(pygame.sprite.Sprite):
         if hero := pygame.sprite.spritecollideany(self, heroes):
             hero.health -= 2
             self.kill()
-            #.move(300, random.randint(100, 500))
 
 
 class Tourell(pygame.sprite.Sprite):
