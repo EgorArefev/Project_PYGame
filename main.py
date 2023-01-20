@@ -1,177 +1,290 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import sys
 
-# Импортируем библиотеку pygame
 import pygame
+
 from player import *
 from blocks import *
+from gun import *
 
-# Объявляем переменные
-WIN_WIDTH = 988  # Ширина создаваемого окна
-WIN_HEIGHT = 598  # Высота
-DISPLAY = (WIN_WIDTH, WIN_HEIGHT)  # Группируем ширину и высоту в одну переменную
+WIN_WIDTH = 988
+WIN_HEIGHT = 598
+DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 BACKGROUND_IMAGE = pygame.image.load('background-color/background_color_1.jpg')
 
+level = [  # уровень по умолчанию
+    "-                                    -",
+    "-                                    -",
+    "-                                    -",
+    "-                                    -",
+    "-----                            -----",
+    "---     *                    *     ---",
+    "--    ---                    ---    --",
+    "-      --                    --      -",
+    "-       -                    -       -",
+    "-       ---                ---       -",
+    "--   -----                  -----   --",
+    "-       -                    -       -",
+    "-       *                    *       -",
+    "-      --                    --      -",
+    "---     -                    -     ---",
+    "--      *                    *      --",
+    "-     ----                  ----     -",
+    "-        -                  -        -",
+    "-----    *                  *    -----",
+    "-       --                  --       -",
+    "-                                    -",
+    "-                                    -",
+    "--------------------------------------",
+    "--------------------------------------"]
 
-class Camera:
-    def __init__(self, camera_func, width, height):
-        self.camera_func = camera_func
-        self.state = Rect(0, 0, width, height)
 
-    def apply(self, target):
-        return target.rect.move(self.state.topleft)
-
-    def update(self, target):
-        self.state = self.camera_func(self.state, target.rect)
-
-
-def camera_configure(camera, target_rect):
-    l, t, _, _ = target_rect
-    _, _, w, h = camera
-    l, t = -l + WIN_WIDTH / 2, -t + WIN_HEIGHT / 2
-
-    l = min(0, l)  # Не движемся дальше левой границы
-    l = max(-(camera.width - WIN_WIDTH), l)  # Не движемся дальше правой границы
-    t = max(-(camera.height - WIN_HEIGHT), t)  # Не движемся дальше нижней границы
-    t = min(0, t)  # Не движемся дальше верхней границы
-
-    return Rect(l, t, w, h)
-
-
-def make_level():
-    global level, platforms, entities, hero, hero_2
+def make_level():  # генерация уровня
+    global level, platforms, entities, hero, hero_2, gun
     entities = pygame.sprite.Group()
     entities.add(hero)
     entities.add(hero_2)
-    platforms = []
-    x = y = 0  # координаты
-    for row in level:  # вся строка
-        for col in row:  # каждый символ
+    entities.add(gun)
+    platforms = pygame.sprite.Group()
+    x = y = 0
+    for row in level:
+        for col in row:
             if col == "-":
                 pf = Platform(x, y)
                 entities.add(pf)
-                platforms.append(pf)
+                platforms.add(pf)
             if col == "*":
-                bd = BlockDie(x, y)
+                bd = BlockWood(x, y)
                 entities.add(bd)
-                platforms.append(bd)
+                platforms.add(bd)
 
-            x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
-        y += PLATFORM_HEIGHT  # то же самое и с высотой
-        x = 0  # на каждой новой строчке начинаем с нуля
+            x += PLATFORM_WIDTH
+        y += PLATFORM_HEIGHT
+        x = 0
+
+
+def terminate():  # функция завершения
+    pygame.quit()
+    sys.exit()
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join(name)
+    try:
+        image = pygame.image.load(fullname)
+    except pygame.error as message:
+        print('Cannot load image:', name)
+        raise SystemExit(message)
+    if colorkey == -1:
+        colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+    image = image.convert_alpha()
+    return image
+
+
+def start_screen():  # стартовое окно
+    global level
+    intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 6"]
+
+    fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 36)
+    text_coord = 250
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 300
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+    hero = pygame.transform.scale(pygame.image.load("players/0.png"), (110, 165))
+    screen.blit(hero, (325, 50))
+    hero = pygame.transform.scale(pygame.image.load("players/0_2.png"), (110, 165))
+    screen.blit(hero, (525, 50))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.KEYDOWN:
+                if 1073741914 <= event.key < 1073741918:
+                    with open(f"levels/{(event.key - 2) % 6}.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                elif event.key == 1073741918:
+                    with open("levels/6.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return
+        pygame.display.flip()
+        clock.tick(60)
+
+
+def finish_screen(hero):  # финальное окно
+    global level
+    intro_text = [f"Выиграл {'синий' if hero.color == 'blue' else 'красный'} с подбором {hero.box_num} боксов!", "",
+                  "Чтобы выбрать уровень введите",
+                  "число на клавиатуре от 1 до 6"]
+
+    fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 36)
+    text_coord = 250
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 500 - intro_rect.width // 2
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+    hero = pygame.transform.scale(pygame.image.load(f"players/{'j' if hero.color == 'blue' else 'j2'}.png"), (110, 165))
+    screen.blit(hero, (445, 50))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.KEYDOWN:
+                if 1073741914 <= event.key < 1073741918:
+                    with open(f"levels/{(event.key - 2) % 6}.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                elif event.key == 1073741918:
+                    with open("levels/6.txt") as lvl:
+                        level = [line.strip() for line in lvl.readlines()]
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return
+        pygame.display.flip()
+        clock.tick(60)
 
 
 def main():
-    global level, entities, platforms, hero, hero_2
-    pygame.init()  # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
-    pygame.display.set_caption("Super Mario Boy")  # Пишем в шапку
-    clock = pygame.time.Clock()
-    bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
-    # будем использовать как фон
+    global level, entities, platforms, hero, hero_2, gun
 
-    hero_2 = Player(55, 514)  # создаем героя по (x,y) координатам
-    left = right = False  # по умолчанию - стоим
-    up = False
+    hero_2 = Player(155, 514)
+    hero = Player(WIN_WIDTH - 180, 514, red=1)
+    heroes = pygame.sprite.Group()
+    heroes.add(hero, hero_2)
 
-    hero = Player(835, 514)  # создаем героя по (x,y) координатам
-    a = d = False  # по умолчанию - стоим
-    w = False
+    gun = Gun(400, 5)
 
-    entities = pygame.sprite.Group()  # Все объекты
-    platforms = []  # то, во что мы будем врезаться или опираться
+    all_boxes = pygame.sprite.Group()
+    entities = pygame.sprite.Group()
+    all_drops = pygame.sprite.Group()
 
     entities.add(hero)
     entities.add(hero_2)
-
-    level = [
-        "-                                    -",
-        "-                                    -",
-        "-                                    -",
-        "-                                    -",
-        "-----                            -----",
-        "---     *                    *     ---",
-        "--    ---                    ---    --",
-        "-      --                    --      -",
-        "-       -                    -       -",
-        "-       ---                ---       -",
-        "--   -----                  -----   --",
-        "-       -                    -       -",
-        "-       *                    *       -",
-        "-      --                    --      -",
-        "---     -                    -     ---",
-        "--      *                    *      --",
-        "-     ----                  ----     -",
-        "-        -                  -        -",
-        "-----    *                  *    -----",
-        "-       --                  --       -",
-        "-                                    -",
-        "-                                    -",
-        "--------------------------------------",
-        "--------------------------------------"]
+    entities.add(hero.bar)
+    entities.add(hero_2.bar)
+    entities.add(gun)
 
     make_level()
 
-    total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
-    total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
-
-    camera = Camera(camera_configure, total_level_width, total_level_height)
     running = True
 
-    while running:  # Основной цикл программы
-        for e in pygame.event.get():  # Обрабатываем события
+    while running:  # основной цикл
+        for e in pygame.event.get():
             if e.type == QUIT:
                 running = False
             elif e.type == KEYDOWN:
                 if e.key == K_w:
-                    w = True
+                    hero_2.up = True
                 elif e.key == K_a:
-                    a = True
+                    hero_2.left = True
                 elif e.key == K_d:
-                    d = True
+                    hero_2.right = True
                 elif e.key == K_s:
                     new_l = list(map(list, level))
-                    if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " ":
+                    if new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] == " " and hero_2.blocks_and_bullets > 0:
                         new_l[hero_2.rect.y // 26 + 2][hero_2.rect.x // 26] = "-"
+                        hero_2.blocks_and_bullets -= 1
                         level = list(map("".join, new_l))
                         make_level()
                 elif e.key == K_UP:
-                    up = True
+                    hero.up = True
                 elif e.key == K_LEFT:
-                    left = True
+                    hero.left = True
                 elif e.key == K_RIGHT:
-                    right = True
+                    hero.right = True
                 elif e.key == K_DOWN:
                     new_l = list(map(list, level))
-                    if new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] == " ":
-                        new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] = "-"
-                        level = list(map("".join, new_l))
-                        make_level()
+                    try:
+                        if new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] == " " and hero.blocks_and_bullets > 0:
+                            new_l[hero.rect.y // 26 + 2][hero.rect.x // 26] = "-"
+                            hero.blocks_and_bullets -= 1
+                            level = list(map("".join, new_l))
+                            make_level()
+                    except:
+                        pass
 
             elif e.type == KEYUP:
                 if e.key == K_w:
-                    w = False
+                    hero_2.up = False
                 elif e.key == K_d:
-                    d = False
+                    hero_2.right = False
                 elif e.key == K_a:
-                    a = False
+                    hero_2.left = False
                 elif e.key == K_UP:
-                    up = False
+                    hero.up = False
                 elif e.key == K_RIGHT:
-                    right = False
+                    hero.right = False
                 elif e.key == K_LEFT:
-                    left = False
+                    hero.left = False
+
+        if col := pygame.sprite.spritecollideany(hero, all_boxes):
+            all_drops.add(col.make_drop(hero))
+            hero.box_num += 1
+
+        if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
+            all_drops.add(col.make_drop(hero_2))
+            hero_2.box_num += 1
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
-        hero.update(left, right, up, platforms)  # передвижение
-        hero_2.update(a, d, w, platforms)  # передвижение
-        entities.draw(screen)  # отображение
-        for e in entities:
-            screen.blit(e.image, camera.apply(e))
+        gun.update(platforms.sprites())
+        box = gun.check_box()
+        if box:
+            all_boxes.add(box)
+        hero.update(platforms.sprites())
+        hero_2.update(platforms.sprites())
+        all_boxes.draw(screen)
+        all_boxes.update(platforms.sprites())
+        platforms.update()
 
-        pygame.display.update()  # обновление и вывод всех изменений на экран
-        clock.tick(75)
+        all_drops.draw(screen)
+        try:
+            all_drops.update(heroes)
+            heroes.sprites()[1]
+        except:
+            print(f"Выиграл {heroes.sprites()[0].color}")
+            return heroes.sprites()[0]
+        entities.draw(screen)
+        for h in [hero, hero_2]:
+            for bar in h.bar.sprites():
+                screen.blit(bar.image, (bar.rect.x, bar.rect.y))
+
+        gun.bullets.update(heroes, platforms)
+        gun.bullets.draw(screen)
+        for pos in gun.crashed_block():
+            new_l = list(map(list, level))
+            new_l[pos[0]][pos[1]] = " "
+            level = list(map("".join, new_l))
+
+        pygame.display.update()
+        clock.tick(60)
 
 
 if __name__ == "__main__":
-    main()
+    pygame.init()
+    screen = pygame.display.set_mode(DISPLAY)
+    pygame.display.set_caption("Гора: Анычар")
+    clock = pygame.time.Clock()
+
+    start_screen()
+    while True:  # бесконечный цикл, показывающий главную часть и финишное окно
+        if hero := main():
+            if not finish_screen(hero):
+                break
+        else:
+            break
+    terminate()

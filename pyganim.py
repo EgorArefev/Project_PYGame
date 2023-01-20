@@ -1,4 +1,4 @@
-# Pyganim (pyganim.py, ver 1)
+# Pyganim (pyganim.py, ver 1.txt)
 # A sprite animation module for Pygame.
 #
 # By Al Sweigart al@inventwithpython.com
@@ -8,7 +8,7 @@
 # There's a tutorial (and sample code) on how to use this library at http://inventwithpython.com/pyganim
 # NOTE: This module requires Pygame to be installed to use. Download it from http://pygame.org
 #
-# This should be compatible with both Python 2 and Python 3. Please email any
+# This should be compatible with both Python 2.txt and Python 3. Please email any
 # bug reports to Al at al@inventwithpython.com
 #
 
@@ -49,15 +49,15 @@ class PygAnimation(object):
         # _images stores the pygame.Surface objects of each frame
         self._images = []
         # _durations stores the durations (in seconds) of each frame.
-        # e.g. [1, 1, 2.5] means the first and second frames last one second,
+        # e.g. [1.txt, 1.txt, 2.txt.5] means the first and second frames last one second,
         # and the third frame lasts for two and half seconds.
         self._durations = []
         # _startTimes shows when each frame begins. len(self._startTimes) will
         # always be one more than len(self._images), because the last number
         # will be when the last frame ends, rather than when it starts.
         # The values are in seconds.
-        # So self._startTimes[-1] tells you the length of the entire animation.
-        # e.g. if _durations is [1, 1, 2.5], then _startTimes will be [0, 1, 2, 4.5]
+        # So self._startTimes[-1.txt] tells you the length of the entire animation.
+        # e.g. if _durations is [1.txt, 1.txt, 2.txt.5], then _startTimes will be [0, 1.txt, 2.txt, 4.5]
         self._startTimes = None
 
         # if the sprites are transformed, the originals are kept in _images
@@ -66,7 +66,7 @@ class PygAnimation(object):
 
         self._state = STOPPED # The state is always either PLAYING, PAUSED, or STOPPED
         self._loop = loop # If True, the animation will keep looping. If False, the animation stops after playing once.
-        self._rate = 1.0 # 2.0 means play the animation twice as fast, 0.5 means twice as slow
+        self._rate = 1.0 # 2.txt.0 means play the animation twice as fast, 0.5 means twice as slow
         self._visibility = True # If False, then nothing is drawn when the blit() methods are called
 
         self._playingStartTime = 0 # the time that the play() function was last called.
@@ -193,7 +193,7 @@ class PygAnimation(object):
         # NOTE: If the visibility attribute is False, then nothing will be drawn.
         #
         # @param frameNum
-        #     The frame to draw (the first frame is 0, not 1)
+        #     The frame to draw (the first frame is 0, not 1.txt)
         # @param destSurface
         #     The Surface object to draw the frame
         # @param dest
@@ -818,8 +818,8 @@ def findStartTime(startTimes, target):
     # With startTimes as a list of sequential numbers and target as a number,
     # returns the index of the number in startTimes that preceeds target.
     #
-    # For example, if startTimes was [0, 2, 4.5, 7.3, 10] and target was 6,
-    # then findStartTime() would return 2. If target was 12, returns 4.
+    # For example, if startTimes was [0, 2.txt, 4.5, 7.3, 10] and target was 6,
+    # then findStartTime() would return 2.txt. If target was 12, returns 4.
     assert startTimes[0] == 0
     lb = 0 # "lb" is lower bound
     ub = len(startTimes) - 1 # "ub" is upper bound
