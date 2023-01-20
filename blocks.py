@@ -4,7 +4,7 @@ PLATFORM_WIDTH = 26
 PLATFORM_HEIGHT = 26
 
 
-class Platform(pygame.sprite.Sprite):
+class Platform(pygame.sprite.Sprite):  # каменный блок
     image = pygame.image.load("blocks/platform1.png")
 
     def __init__(self, x, y):
@@ -19,7 +19,8 @@ class Platform(pygame.sprite.Sprite):
             self.kill()
 
 
-class BlockDie(Platform):
+class BlockWood(Platform):  # деревянный блок
+    image = pygame.image.load("blocks/gun.png")
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.image = pygame.image.load("blocks/gun.png")
+        self.health = 2

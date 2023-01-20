@@ -5,10 +5,10 @@ from math import atan, degrees
 crashed_blocks = []
 
 
-class Bullet(pygame.sprite.Sprite):
+class Bullet(pygame.sprite.Sprite):  # пуля
     image = pygame.transform.scale(pygame.image.load("gun_with_blocks/bullet.png"), (15, 15))
 
-    def __init__(self, x, y, x_s, y_s, color=""):
+    def __init__(self, x, y, x_s, y_s, color=""):  # color - неприкасаемый цвет
         super().__init__()
         self.color = color
         self.k = 0
@@ -41,7 +41,7 @@ class Bullet(pygame.sprite.Sprite):
                 hero.health -= 1
                 self.k = 1
 
-    def return_crashed_blocks(self):
+    def return_crashed_blocks(self):  # если пуля сломала юлок
         global crashed_blocks
         c = crashed_blocks[:]
         crashed_blocks = []

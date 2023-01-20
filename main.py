@@ -1,6 +1,6 @@
 import sys
 
-import pygame.sprite
+import pygame
 
 from player import *
 from blocks import *
@@ -11,7 +11,7 @@ WIN_HEIGHT = 598
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 BACKGROUND_IMAGE = pygame.image.load('background-color/background_color_1.jpg')
 
-level = [
+level = [  # уровень по умолчанию
     "-                                    -",
     "-                                    -",
     "-                                    -",
@@ -38,7 +38,7 @@ level = [
     "--------------------------------------"]
 
 
-def make_level():
+def make_level():  # генерация уровня
     global level, platforms, entities, hero, hero_2, gun
     entities = pygame.sprite.Group()
     entities.add(hero)
@@ -53,7 +53,7 @@ def make_level():
                 entities.add(pf)
                 platforms.add(pf)
             if col == "*":
-                bd = BlockDie(x, y)
+                bd = BlockWood(x, y)
                 entities.add(bd)
                 platforms.add(bd)
 
@@ -62,7 +62,7 @@ def make_level():
         x = 0
 
 
-def terminate():
+def terminate():  # функция завершения
     pygame.quit()
     sys.exit()
 
@@ -81,7 +81,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-def start_screen():
+def start_screen():  # стартовое окно
     global level
     intro_text = ["Чтобы выбрать уровень введите", "число на клавиатуре от 1 до 6"]
 
@@ -120,9 +120,10 @@ def start_screen():
         clock.tick(60)
 
 
-def finish_screen(color):
+def finish_screen(hero):  # финальное окно
     global level
-    intro_text = [f"Выиграл {'синий' if color == 'blue' else 'красный'}!", "", "Чтобы выбрать уровень введите",
+    intro_text = [f"Выиграл {'синий' if hero.color == 'blue' else 'красный'} с подбором {hero.box_num} боксов!", "",
+                  "Чтобы выбрать уровень введите",
                   "число на клавиатуре от 1 до 6"]
 
     fon = pygame.transform.scale(BACKGROUND_IMAGE, (WIN_WIDTH, WIN_HEIGHT))
@@ -137,7 +138,7 @@ def finish_screen(color):
         intro_rect.x = 500 - intro_rect.width // 2
         text_coord += intro_rect.height
         screen.blit(string_rendered, intro_rect)
-    hero = pygame.transform.scale(pygame.image.load(f"players/{'j' if color == 'blue' else 'j2'}.png"), (110, 165))
+    hero = pygame.transform.scale(pygame.image.load(f"players/{'j' if hero.color == 'blue' else 'j2'}.png"), (110, 165))
     screen.blit(hero, (445, 50))
 
     while True:
@@ -182,7 +183,7 @@ def main():
 
     running = True
 
-    while running:
+    while running:  # основной цикл
         for e in pygame.event.get():
             if e.type == QUIT:
                 running = False
@@ -233,9 +234,11 @@ def main():
 
         if col := pygame.sprite.spritecollideany(hero, all_boxes):
             all_drops.add(col.make_drop(hero))
+            hero.box_num += 1
 
         if col := pygame.sprite.spritecollideany(hero_2, all_boxes):
             all_drops.add(col.make_drop(hero_2))
+            hero_2.box_num += 1
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
         gun.update(platforms.sprites())
@@ -254,7 +257,7 @@ def main():
             heroes.sprites()[1]
         except:
             print(f"Выиграл {heroes.sprites()[0].color}")
-            return heroes.sprites()[0].color
+            return heroes.sprites()[0]
         entities.draw(screen)
         for h in [hero, hero_2]:
             for bar in h.bar.sprites():
@@ -278,9 +281,9 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     start_screen()
-    while True:
-        if color := main():
-            if not finish_screen(color):
+    while True:  # бесконечный цикл, показывающий главную часть и финишное окно
+        if hero := main():
+            if not finish_screen(hero):
                 break
         else:
             break

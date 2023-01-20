@@ -1,7 +1,7 @@
 import pygame
 
 
-class Bar(pygame.sprite.Sprite):
+class Bar(pygame.sprite.Sprite):  # основной класс бара
     def __init__(self, color):
         super().__init__()
         self.color = color
@@ -9,7 +9,7 @@ class Bar(pygame.sprite.Sprite):
         self.rect.x = 778 if color == "red" else 30
 
 
-class Health(Bar):
+class Health(Bar):  # здоровье
     def __init__(self, color):
         super().__init__(color)
         self.rect.top = 20
@@ -19,7 +19,7 @@ class Health(Bar):
         pygame.draw.rect(self.image, "red", (0, 0, 18 * num, 30))
 
 
-class Blocks(Bar):
+class Blocks(Bar):  # количество боксов для строительства
     def __init__(self, color):
         super().__init__(color)
         self.rect.top = 40

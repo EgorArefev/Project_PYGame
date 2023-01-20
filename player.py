@@ -2,6 +2,10 @@ from pygame import *
 import pyganim
 from bars import *
 
+"""
+обычная анимация для наших задач не очень подходит, поэтому испольуем pyganim, 
+найденный на Хабре, с такими настройками:
+"""
 MOVE_SPEED = 5
 WIDTH = 22
 HEIGHT = 33
@@ -28,7 +32,7 @@ ANIMATION_STAY_2 = [('players/0_2.png', 0.1)]
 
 class Player(sprite.Sprite):
     def __init__(self, x, y, red=False):
-        box_num = 0
+        self.box_num = 0
         if not red:
             self.color = "blue"
             self.anim_right = ANIMATION_RIGHT

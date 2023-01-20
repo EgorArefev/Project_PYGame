@@ -28,7 +28,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-class Gun(pygame.sprite.Sprite):
+class Gun(pygame.sprite.Sprite):  # тарелка
     bullets = pygame.sprite.Group()
 
     def __init__(self, x, y):
@@ -57,7 +57,7 @@ class Gun(pygame.sprite.Sprite):
         return []
 
 
-class Box(pygame.sprite.Sprite):
+class Box(pygame.sprite.Sprite):  # дроп
     def __init__(self, x, y):
         super().__init__()
         num = random.randint(0, 3)
@@ -77,7 +77,7 @@ class Box(pygame.sprite.Sprite):
             self.rect.y -= 1
 
 
-class Ghost(pygame.sprite.Sprite):
+class Ghost(pygame.sprite.Sprite):  # привидение
     image = pygame.image.load("gun_with_blocks/ghost.png")
 
     def __init__(self, hero):
@@ -98,7 +98,7 @@ class Ghost(pygame.sprite.Sprite):
             self.kill()
 
 
-class Tourell(pygame.sprite.Sprite):
+class Tourell(pygame.sprite.Sprite):  # летающая турель
     blue = pygame.transform.scale(pygame.image.load("gun_with_blocks/tourel.png"), (114, 78))
     red = pygame.transform.scale(load_image("gun_with_blocks/tourel_2.png"), (114, 78))
     bullet = pygame.transform.scale(pygame.image.load("gun_with_blocks/bullet.png"), (23, 20))
